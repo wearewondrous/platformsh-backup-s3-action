@@ -1,0 +1,16 @@
+name: 'Platformsh Backup S3 Action'
+description: 'Creates Backups on S3 from Platform.sh projects'
+inputs:
+  platformsh_project:
+    description: 'Platform.sh project ID.'
+    required: true
+  platformsh_environment:
+    description: 'Platform.sh environment name.'
+    required: true
+  aws_s3_bucket:
+    description: 'AWS S3 bucket name.'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
