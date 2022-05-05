@@ -37,3 +37,4 @@ platform environment:info --project "$INPUT_PLATFORMSH_PROJECT" --environment "$
 
 #---repo backup---
 platform get pnhmk7gxexupg SOURCE -e dev
+ls
