@@ -21,18 +21,19 @@ platform environment:info --project "$INPUT_PLATFORMSH_PROJECT" --environment "$
 #echo -e "${green}Finished Database Backup...${reset}"
 
 #--- public files backup---
-echo -e "${red}Starting Public Files Backup...${reset}"
-platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PUBLIC_FILES_PATH" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y
+#echo -e "${red}Starting Public Files Backup...${reset}"
+#platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PUBLIC_FILES_PATH" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y
+##todo upload
+#echo -e "${green}Finished Public Files Backup...${reset}"
 
-#todo upload
-echo -e "${green}Finished Public Files Backup...${reset}"
+
 #---private files backup---
-if [ "$INPUT_WITH_PRIVATE_FILES" = 'yes' ]
-then
-  echo -e "${red}Starting Private Files Backup...${reset}"
-  platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PRIVATE_FILES_PATH" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y
-  echo -e "${green}Starting Private Files Backup...${reset}"
-fi
+#if [ "$INPUT_WITH_PRIVATE_FILES" = 'yes' ]
+#then
+#  echo -e "${red}Starting Private Files Backup...${reset}"
+#  platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PRIVATE_FILES_PATH" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y
+#  echo -e "${green}Starting Private Files Backup...${reset}"
+#fi
 
 #---repo backup---
-
+platform get pnhmk7gxexupg SOURCE -e dev
