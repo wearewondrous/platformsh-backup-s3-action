@@ -38,7 +38,7 @@ FILENAME_SOURCE="backup-source-$DAY"
 
 #---repo backup---
 echo -e "${red}Starting Source Backup...${reset}"
-git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPOSITORY".git FILENAME_SOURCE
+git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPOSITORY".git "$FILENAME_SOURCE"
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE"
 aws s3 cp "$FILENAME_SOURCE".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"
 echo -e "${green}Finished Private Files Backup...${reset}"
