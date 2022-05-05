@@ -7,6 +7,7 @@ reset='\033[0m'
 php --version
 platform --version
 
+sed -i 's/#   StrictHostKeyChecking ask.*/StrictHostKeyChecking accept-new/' /etc/ssh/ssh_config
 FILENAME="backup-$(date +%F-%T)"
 
 platform environment:info --project "$INPUT_PLATFORMSH_PROJECT" --environment "$INPUT_PLATFORMSH_ENVIRONMENT"
