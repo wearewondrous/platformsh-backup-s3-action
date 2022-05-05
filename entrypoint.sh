@@ -22,7 +22,7 @@ platform environment:info --project "$INPUT_PLATFORMSH_PROJECT" --environment "$
 
 #--- public files backup---
 echo -e "${red}Starting Public Files Backup...${reset}"
-platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PUBLIC_FILES_PATH" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' -y
+platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PUBLIC_FILES_PATH" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y
 
 #todo upload
 echo -e "${green}Finished Public Files Backup...${reset}"
