@@ -5,6 +5,7 @@ RUN apt-get update \
       keychain \
       unzip \
       rsync grsync \
+      git \
     && curl -L https://github.com/platformsh/platformsh-cli/releases/latest/download/platform.phar -o platform \
     && chmod +x platform && mv platform /usr/local/bin/platform
 

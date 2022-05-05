@@ -8,6 +8,7 @@ ENVIRONMENT="$INPUT_PLATFORMSH_ENVIRONMENT"
 
 php --version
 platform --version
+git --version
 
 sed -i 's/#   StrictHostKeyChecking ask.*/StrictHostKeyChecking accept-new/' /etc/ssh/ssh_config
 FILENAME="backup-$(date +%F-%T)"
