@@ -10,6 +10,18 @@ inputs:
   aws_s3_bucket:
     description: 'AWS S3 bucket name.'
     required: true
+  with_private_files:
+    description: 'whether to backup private files or not'
+    required: true
+    default: 'no'
+  public_files_path:
+    description: 'Public File Path'
+    required: false
+    default: 'web/sites/default/files'
+  private_files_path:
+    description: 'Private File Path'
+    required: false
+    default: 'private'
 
 runs:
   using: 'docker'
