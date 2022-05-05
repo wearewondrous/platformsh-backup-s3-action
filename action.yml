@@ -1,6 +1,12 @@
 name: 'Platformsh Backup S3 Action'
 description: 'Creates Backups on S3 from Platform.sh projects'
 inputs:
+  gh_user:
+    description: 'Github user related with the Access Token'
+    required: true
+  gh_repository:
+    description: 'Github repo'
+    required: true
   platformsh_project:
     description: 'Platform.sh project ID.'
     required: true

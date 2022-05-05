@@ -33,9 +33,12 @@ platform environment:info --project "$INPUT_PLATFORMSH_PROJECT" --environment "$
 #then
 #  echo -e "${red}Starting Private Files Backup...${reset}"
 #  platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$INPUT_PRIVATE_FILES_PATH" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y
-#  echo -e "${green}Starting Private Files Backup...${reset}"
+#  echo -e "${green}Finished Private Files Backup...${reset}"
 #fi
 
 #---repo backup---
-platform get pnhmk7gxexupg SOURCE -e dev
+echo -e "${red}Starting Source Backup...${reset}"
+git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPOSITORY".git repo_backup
 ls
+echo -e "${green}Finished Private Files Backup...${reset}"
+
