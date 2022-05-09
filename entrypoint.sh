@@ -23,9 +23,9 @@ FILENAME_SOURCE="backup-source-$DAY"
 
 #--- public files backup---
 echo -e "${red}Starting Public Files Backup...${reset}"
-platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$FILENAME_PUBLIC" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y
+platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "yyy" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y
 ls
-zip -r "$FILENAME_PUBLIC".zip "$FILENAME_PUBLIC" -q
+zip -r "$FILENAME_PUBLIC".zip "yyy" -q
 aws s3 cp "$FILENAME_PUBLIC".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"/ --quiet
 echo -e "${green}Finished Public Files Backup...${reset}"
 
