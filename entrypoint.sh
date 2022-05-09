@@ -34,9 +34,9 @@ echo -e "${green}Finished Public Files Backup...${reset}"
 if [ "$INPUT_WITH_PRIVATE_FILES" = 'yes' ]
 then
   echo -e "${red}Starting Private Files Backup...${reset}"
-  platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$FILENAME_PRIVATE" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y -q
+  platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "xxx" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y -q
   ls
-  zip -r "$FILENAME_PRIVATE".zip "$FILENAME_PRIVATE" -q
+  zip -r "$FILENAME_PRIVATE".zip "xxx" -q
   aws s3 cp "$FILENAME_PRIVATE".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"/ --quiet
   echo -e "${green}Finished Private Files Backup...${reset}"
 fi
