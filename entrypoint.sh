@@ -24,7 +24,8 @@ echo -e "${green}Finished Database Backup...${reset}"
 #--- public files backup---
 echo -e "${red}Starting Public Files Backup...${reset}"
 platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$FILENAME_PUBLIC" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y -q
-zip -r "$FILENAME_PUBLIC".zip "$FILENAME_PUBLIC"
+ls
+zip -r "$FILENAME_PUBLIC".zip "$FILENAME_PUBLIC" -q
 aws s3 cp "$FILENAME_PUBLIC".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"/ --quiet
 echo -e "${green}Finished Public Files Backup...${reset}"
 
@@ -34,7 +35,8 @@ if [ "$INPUT_WITH_PRIVATE_FILES" = 'yes' ]
 then
   echo -e "${red}Starting Private Files Backup...${reset}"
   platform mount:download -e "$INPUT_PLATFORMSH_ENVIRONMENT" --target "$FILENAME_PRIVATE" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y -q
-  zip -r "$FILENAME_PRIVATE".zip "$FILENAME_PRIVATE"
+  ls
+  zip -r "$FILENAME_PRIVATE".zip "$FILENAME_PRIVATE" -q
   aws s3 cp "$FILENAME_PRIVATE".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"/ --quiet
   echo -e "${green}Finished Private Files Backup...${reset}"
 fi
@@ -42,6 +44,6 @@ fi
 #---repo backup---
 echo -e "${red}Starting Source Code Backup...${reset}"
 git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPOSITORY".git "$FILENAME_SOURCE" --quiet
-zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE"
+zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
 aws s3 cp "$FILENAME_SOURCE".zip s3://"$INPUT_AWS_S3_BUCKET"/"$INPUT_PROJECT_NAME"/"$DAY"/ --quiet
 echo -e "${green}Finished Source Code Backup...${reset}"
