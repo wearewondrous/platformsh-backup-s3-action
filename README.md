@@ -2,11 +2,12 @@
 
 ## Setup
 Create workflow yml file and use the example below to configure the project.
-```$ touch .github/workflows/mybackups.yml```
+```$ touch .github/workflows/sync-backups.yml```
 ```yml
 name: Sync Backups
 on:
-  pull_request:
+  schedule:
+    - cron: '0 1 * * *'
 jobs:
   upload-backup:
     runs-on: ubuntu-latest
