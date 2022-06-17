@@ -1,36 +1,27 @@
-name: 'Platformsh Backup S3 Action'
-description: 'Creates Backups on S3 from Platform.sh projects'
+name: 'Drupal Platform.sh Backup S3 Action'
+description: 'Create Backups on Amazon S3 for Drupal 8+ projects deployed on Platform.sh'
 inputs:
-  project_name:
-    description: 'Name of the project'
-    required: true
   gh_user:
     description: 'Github user related with the Access Token'
-    required: true
-  gh_repository:
-    description: 'Github repo'
     required: true
   platformsh_project:
     description: 'Platform.sh project ID.'
     required: true
-  platformsh_environment:
-    description: 'Platform.sh environment name.'
-    required: true
   aws_s3_bucket:
     description: 'AWS S3 bucket name.'
     required: true
-  with_private_files:
-    description: 'whether to backup private files or not'
-    required: true
-    default: 'no'
   public_files_path:
-    description: 'Public File Path'
+    description: 'Public File Path. Defaults to "web/sites/default/files".'
     required: false
     default: 'web/sites/default/files'
   private_files_path:
-    description: 'Private File Path'
+    description: 'Private File Path. Defaults to "private".'
     required: false
     default: 'private'
+  number_of_backups:
+    description: 'Max number of backups. Defaults to 30. Set to 0 for unlimited backups.'
+    required: false
+    default: '30'
 
 runs:
   using: 'docker'
