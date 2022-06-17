@@ -12,10 +12,10 @@ sed -i 's/#   StrictHostKeyChecking ask.*/StrictHostKeyChecking accept-new/' /et
 
 #--- set variables ---
 REPOSITORY_NAME=$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $2}')
-DAY=$(date +%F-%T)
-S3_URI="s3://$INPUT_AWS_S3_BUCKET/$REPOSITORY_NAME/$DAY/"
+DATETIME=$(date +%FT%T)
+S3_URI="s3://$INPUT_AWS_S3_BUCKET/$REPOSITORY_NAME/$DATETIME/"
 
-FILE_PREFIX="$REPOSITORY_NAME--$GITHUB_REF_NAME--$DAY"
+FILE_PREFIX="$REPOSITORY_NAME--$GITHUB_REF_NAME--$DATETIME"
 FILENAME_DB="$FILE_PREFIX--database"
 FILENAME_PUBLIC="$FILE_PREFIX--public-files"
 FILENAME_PRIVATE="$FILE_PREFIX--private-files"
