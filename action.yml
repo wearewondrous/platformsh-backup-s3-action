@@ -18,8 +18,8 @@ inputs:
     description: 'Private File Path. Defaults to "private".'
     required: false
     default: 'private'
-  number_of_backups:
-    description: 'Max number of backups. Defaults to 30. Set to 0 for unlimited backups.'
+  days_to_backup:
+    description: 'Max number of days to backup. Defaults to 30 days. Set to 0 for unlimited backups.'
     required: false
     default: '30'
 

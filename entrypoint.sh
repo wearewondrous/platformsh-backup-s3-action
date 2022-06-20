@@ -54,3 +54,33 @@ git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPO
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
 aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --quiet
 echo -e "${green}Finished Source Code Backup...${reset}"
+
+#--- cleanup s3 folder ---
+if [ $DAYS_TO_BACKUP -ne  '0' ]
+then
+  echo -e "${yellow}Cleaning up Backups older than $DAYS_TO_BACKUP days... ${reset}"
+
+  aws s3 ls "$S3_BASE_URI/" | while read -r line;  do
+
+    # trim ls output to only contain the folder name formatted as ISO 8601 date
+    # expecting something like "PRE 2022-06-20T12:00:00/"
+    FOLDER_NAME=$(echo $line | cut -c5-23)
+
+    CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
+    BEFORE_TIMESTAMP=`date -d"-$DAYS_TO_BACKUP days" +%s`
+
+    if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
+      then
+        if [[ $FOLDER_NAME != "" ]]
+          then
+            S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
+            echo -e "${blue}deleting $FOLDER_NAME ${reset}"
+            aws s3 del "$S3_OUTDATED_BACKUP_URI" --recursive
+        fi
+    fi
+  done;
+
+  echo -e "${green}Finished cleanup...${reset}"
+else
+  echo -e "${green}Skipping cleanup...${reset}"
+fi

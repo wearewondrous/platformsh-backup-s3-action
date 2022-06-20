@@ -7,7 +7,7 @@ AWS bucket. Instead of using the platform sh server resources, GitHub resources 
 Thus, you'll be able to restore the project from the four compressed files.
 
 With the required `aws_s3_bucket` you define the parent folder. The current _repository name_ will be used as a default folder.
-Backups are folders named by the current datetime containing the compressed files. An example folder structure see below:
+Backups are folders named by the current _datetime_ (in ISO 8601 date format) containing the compressed files. An example folder structure see below:
 
 ````
 <aws_s3_bucket>/
@@ -20,7 +20,7 @@ Backups are folders named by the current datetime containing the compressed file
 │  ├─ .../
 ````
 
-With the `number_of_backups` (defaults to `30`) you can limit the amount of folders in aws S3. Set it to `0` to disable this limitation and store all backups made.
+With the `days_to_backup` (defaults to `30`) you can limit the amount of folders in aws S3. Set it to `0` to disable this limitation and store all backups made.
 Note: If no private folder is present, this file will be empty.
 
 ## Setup
