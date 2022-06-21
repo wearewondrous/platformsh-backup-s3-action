@@ -25,7 +25,7 @@ FILENAME_SOURCE="$FILE_PREFIX--source-code"
 
 #--- database backup ---
 echo -e "${yellow}Starting Database Backup...${reset}"
-platform db:dump -v --yes --project "$INPUT_PLATFORMSH_PROJECT" --environment "$GITHUB_REF_NAME" --gzip -f "$FILENAME_DB".sql.gz
+platform db:dump -v --yes --project "$INPUT_PLATFORMSH_PROJECT" --environment "$GITHUB_REF_NAME" --gzip -f "$FILENAME_DB".sql.gz -q
 ls -d "$REPOSITORY_NAME"*
 aws s3 cp "$FILENAME_DB".sql.gz "$S3_BACKUP_URI" --only-show-errors
 echo -e "${green}Finished Database Backup...${reset}"
@@ -54,7 +54,6 @@ echo -e "${yellow}Starting Source Code Backup...${reset}"
 git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$GITHUB_REPOSITORY".git "$FILENAME_SOURCE" --quiet
 ls -d "$REPOSITORY_NAME"*
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
-ls -d "$REPOSITORY_NAME"*
 aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --only-show-errors
 echo -e "${green}Finished Source Code Backup...${reset}"
 
