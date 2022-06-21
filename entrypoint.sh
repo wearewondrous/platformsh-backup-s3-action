@@ -63,6 +63,7 @@ then
   echo -e "${yellow}Cleaning up Backups older than $INPUT_DAYS_TO_BACKUP days... ${reset}"
 
   # -- test ---
+  echo "$S3_BASE_URI"
   aws s3 ls "$S3_BASE_URI/"
   # -- test ---
 
@@ -75,13 +76,18 @@ then
     CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
     BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
 
+    # -- test ---
+    echo "$FOLDER_NAME"
+    echo "$CREATE_TIMESTAMP | $BEFORE_TIMESTAMP"
+    # -- test ---
+
     if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
       then
         if [[ $FOLDER_NAME != "" ]]
           then
             S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
             echo -e "${blue}deleting $FOLDER_NAME ${reset}"
-            aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive
+            aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
         fi
     fi
   done;
