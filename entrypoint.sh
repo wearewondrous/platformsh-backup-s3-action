@@ -69,8 +69,8 @@ then
   aws s3 ls "$S3_BASE_URI/" | while read -r line;  do
 
     # trim ls output to only contain the folder name formatted as ISO 8601 date
-    # expecting something like "PRE 2022-06-20T12:00:00/"
-    FOLDER_NAME=$(echo $line | cut -c5-23)
+    # expecting something like "2022-06-20T12:00:00 0"
+    FOLDER_NAME=$(echo $line | cut -c-20)
 
     CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
     BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
