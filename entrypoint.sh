@@ -62,6 +62,10 @@ if [[ $INPUT_DAYS_TO_BACKUP != '0' ]]
 then
   echo -e "${yellow}Cleaning up Backups older than $INPUT_DAYS_TO_BACKUP days... ${reset}"
 
+  # -- test ---
+  aws s3 ls "$S3_BASE_URI/"
+  # -- test ---
+
   aws s3 ls "$S3_BASE_URI/" | while read -r line;  do
 
     # trim ls output to only contain the folder name formatted as ISO 8601 date
