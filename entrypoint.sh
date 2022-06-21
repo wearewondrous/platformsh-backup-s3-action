@@ -56,7 +56,7 @@ aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --quiet
 echo -e "${green}Finished Source Code Backup...${reset}"
 
 #--- cleanup s3 folder ---
-if [ $DAYS_TO_BACKUP -ne  '0' ]
+if [[ $DAYS_TO_BACKUP != '0' ]]
 then
   echo -e "${yellow}Cleaning up Backups older than $DAYS_TO_BACKUP days... ${reset}"
 
