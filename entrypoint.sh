@@ -15,7 +15,7 @@ sed -i 's/#   StrictHostKeyChecking ask.*/StrictHostKeyChecking accept-new/' /et
 REPOSITORY_NAME=$(echo $GITHUB_REPOSITORY | awk -F '/' '{print $2}')
 DATETIME=$(date +%FT%T)
 S3_BASE_URI="s3://$INPUT_AWS_S3_BUCKET/$REPOSITORY_NAME"
-S3_BACKUP_URI="S3_BASE_URI/$DATETIME/"
+S3_BACKUP_URI="$S3_BASE_URI/$DATETIME/"
 
 FILE_PREFIX="$REPOSITORY_NAME--$GITHUB_REF_NAME--$DATETIME"
 FILENAME_DB="$FILE_PREFIX--database"
@@ -50,7 +50,7 @@ fi
 
 #--- repo backup ---
 echo -e "${yellow}Starting Source Code Backup...${reset}"
-git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$INPUT_GH_REPOSITORY".git "$FILENAME_SOURCE" --quiet
+git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$GITHUB_REPOSITORY".git "$FILENAME_SOURCE" --quiet
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
 aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --quiet
 echo -e "${green}Finished Source Code Backup...${reset}"
