@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: master
       - uses: wearewondrous/platformsh-backup-s3-action@v1
         with:
           gh_user: 'myuser' # required, GitHub user related with the Access Token
@@ -62,6 +64,10 @@ AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION
 ```
+
+## Todo
+
+s3 access rights
 
 ## Credits
 
