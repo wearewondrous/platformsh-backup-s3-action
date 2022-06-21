@@ -32,7 +32,7 @@ echo -e "${green}Finished Database Backup...${reset}"
 
 #--- public files backup ---
 echo -e "${yellow}Starting Public Files Backup...${reset}"
-platform mount:download -e "$GITHUB_REF_NAME" --target "public-temp" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y -q
+platform mount:download --environment "$GITHUB_REF_NAME" --target "public-temp" --mount "$INPUT_PUBLIC_FILES_PATH" --exclude 'styles' --exclude 'css' --exclude 'js' --exclude 'config_*' --exclude 'translations' -y -q
 ls -d "$REPOSITORY_NAME"*
 zip -r "$FILENAME_PUBLIC".zip "public-temp" -q
 aws s3 cp "$FILENAME_PUBLIC".zip "$S3_BACKUP_URI" --only-show-errors
@@ -42,7 +42,7 @@ echo -e "${green}Finished Public Files Backup...${reset}"
 if [[ -d "$INPUT_PRIVATE_FILES_PATH" ]]
 then
   echo -e "${yellow}Starting Private Files Backup...${reset}"
-  platform mount:download -e "$GITHUB_REF_NAME" --target "private-temp" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y -q
+  platform mount:download --environment "$GITHUB_REF_NAME" --target "private-temp" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig' -y -q
   ls -d "$REPOSITORY_NAME"*
   zip -r "$FILENAME_PRIVATE".zip "private-temp" -q
   aws s3 cp "$FILENAME_PRIVATE".zip "$S3_BACKUP_URI" --only-show-errors
@@ -52,6 +52,7 @@ fi
 #--- repo backup ---
 echo -e "${yellow}Starting Source Code Backup...${reset}"
 git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$GITHUB_REPOSITORY".git "$FILENAME_SOURCE" --quiet
+ls -d "$REPOSITORY_NAME"*
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
 ls -d "$REPOSITORY_NAME"*
 aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --only-show-errors
