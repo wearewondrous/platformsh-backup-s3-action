@@ -58,9 +58,9 @@ aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --only-show-errors
 echo -e "${green}Finished Source Code Backup...${reset}"
 
 #--- cleanup s3 folder ---
-if [[ $DAYS_TO_BACKUP != '0' ]]
+if [[ $INPUT_DAYS_TO_BACKUP != '0' ]]
 then
-  echo -e "${yellow}Cleaning up Backups older than $DAYS_TO_BACKUP days... ${reset}"
+  echo -e "${yellow}Cleaning up Backups older than $INPUT_DAYS_TO_BACKUP days... ${reset}"
 
   aws s3 ls "$S3_BASE_URI/" | while read -r line;  do
 
@@ -69,7 +69,7 @@ then
     FOLDER_NAME=$(echo $line | cut -c5-23)
 
     CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
-    BEFORE_TIMESTAMP=`date -d"-$DAYS_TO_BACKUP days" +%s`
+    BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
 
     if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
       then
@@ -77,7 +77,7 @@ then
           then
             S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
             echo -e "${blue}deleting $FOLDER_NAME ${reset}"
-            aws s3 del "$S3_OUTDATED_BACKUP_URI" --recursive
+            aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive
         fi
     fi
   done;
