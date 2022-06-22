@@ -5,10 +5,6 @@ yellow="\033[33m"
 blue="\033[34m"
 reset='\033[0m'
 
-php --version
-platform --version
-git --version
-
 sed -i 's/#   StrictHostKeyChecking ask.*/StrictHostKeyChecking accept-new/' /etc/ssh/ssh_config
 
 #--- set variables ---
@@ -78,19 +74,13 @@ then
       CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
       BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
 
-      # -- test ---
-      echo "$FOLDER_NAME"
-      echo "$CREATE_TIMESTAMP | $BEFORE_TIMESTAMP"
-      # -- test ---
-
       if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
         then
-          if [[ $FOLDER_NAME != "" ]]
-            then
-              S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
-              echo -e "${blue}deleting $FOLDER_NAME ${reset}"
-              aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
-          fi
+          S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
+
+          echo -e "${blue}deleting $FOLDER_NAME ${reset}"
+
+          aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
       fi
     done
   else
