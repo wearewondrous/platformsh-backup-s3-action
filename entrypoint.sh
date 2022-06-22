@@ -38,14 +38,11 @@ aws s3 cp "$FILENAME_PUBLIC".zip "$S3_BACKUP_URI" --only-show-errors
 echo -e "${green}Finished Public Files Backup...${reset}"
 
 #--- private files backup ---
-if [[ -d "$INPUT_PRIVATE_FILES_PATH" ]]
-then
-  echo -e "${yellow}Starting Private Files Backup...${reset}"
-  platform mount:download $PLATFORM_CLI_DEFAULT_ARGS --target "private-temp" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig'
-  zip -r "$FILENAME_PRIVATE".zip "private-temp" -q
-  aws s3 cp "$FILENAME_PRIVATE".zip "$S3_BACKUP_URI" --only-show-errors
-  echo -e "${green}Finished Private Files Backup...${reset}"
-fi
+echo -e "${yellow}Starting Private Files Backup...${reset}"
+platform mount:download $PLATFORM_CLI_DEFAULT_ARGS --target "private-temp" --mount "$INPUT_PRIVATE_FILES_PATH" --exclude 'twig'
+zip -r "$FILENAME_PRIVATE".zip "private-temp" -q
+aws s3 cp "$FILENAME_PRIVATE".zip "$S3_BACKUP_URI" --only-show-errors
+echo -e "${green}Finished Private Files Backup...${reset}"
 
 #--- repo backup ---
 echo -e "${yellow}Starting Source Code Backup...${reset}"
