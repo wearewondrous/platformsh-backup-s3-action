@@ -80,7 +80,7 @@ then
 
           echo -e "${blue}deleting $FOLDER_NAME ${reset}"
 
-          aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
+          aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --only-show-errors
       fi
     done
   else
