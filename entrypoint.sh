@@ -48,7 +48,10 @@ fi
 
 #--- repo backup ---
 echo -e "${yellow}Starting Source Code Backup...${reset}"
-git clone https://"$INPUT_GH_USER":"$GH_ACCESS_TOKEN"@github.com/"$GITHUB_REPOSITORY".git "$FILENAME_SOURCE" --quiet
+
+REMOTE_REPO_URL="https://$INPUT_GH_USER:$GH_ACCESS_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+
+git clone --branch "$GITHUB_REF_NAME" "$REMOTE_REPO_URL" "$FILENAME_SOURCE" --quiet
 zip -r "$FILENAME_SOURCE".zip "$FILENAME_SOURCE" -q
 aws s3 cp "$FILENAME_SOURCE".zip "$S3_BACKUP_URI" --only-show-errors
 echo -e "${green}Finished Source Code Backup...${reset}"
