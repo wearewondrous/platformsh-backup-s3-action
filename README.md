@@ -32,6 +32,7 @@ Add the following
 ```yml
 name: Sync Backups
 on:
+  workflow_dispatch:                          # optional, trigger the backup via the GitHub actions UI
   schedule:
     - cron: '0 1 * * *'
 jobs:
@@ -39,19 +40,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: master
       - uses: wearewondrous/platformsh-backup-s3-action@v1
         with:
-          gh_user: 'myuser' # required, GitHub user related with the Access Token
+          gh_user: 'github-username'          # required, GitHub user related with the Access Token
           platformsh_project: 'abcdefghijkl'  # required, Platform.sh project ID
-          aws_s3_bucket: 'my-bucket'  # required, AWS S3 bucket name
+          aws_s3_bucket: 'my-backup-bucket'   # required, AWS S3 bucket name
         env:
-          PLATFORMSH_CLI_TOKEN: ${{ secrets.PLATFORMSH_CLI_TOKEN }}
-          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          PLATFORMSH_CLI_TOKEN: ${{ secrets.PLATFORMSH_CLI_TOKEN }}   # required
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}             # required
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}         # required
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # required
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}       # required
 ```
 See [action.yml](action.yml) for more optional parameters.
 
@@ -65,9 +64,18 @@ AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION
 ```
 
-## Todo
+## AWS S3 IAM permissions
 
-s3 access rights
+To allow the script to push content to the S3 storage, make sure to configure a user with the required access rights to the bucket and target folder.
+See [iam-policies.json](./iam-policies.json) for a sample. Replace `<my-backup-bucket>` with 
+
+## Background knowledge
+
+GitHub Scheduled workflows run on the latest commit on the [default or base branch](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule). If you set e.g. the `dev`-branch as default for pull requests,
+the cron will run with the `GITHUB_REF_NAME` set to `dev`. Thus, we provide the optional variable `TARGET_BRANCH` (defaults to `master` for platform.sh).
+
+Optional but nice: set [workflow_dispatch](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch) on the
+action, to trigger the backup by hand.
 
 ## Credits
 
