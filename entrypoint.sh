@@ -62,35 +62,40 @@ if [[ $INPUT_DAYS_TO_BACKUP != '0' ]]
 then
   echo -e "${yellow}Cleaning up Backups older than $INPUT_DAYS_TO_BACKUP days... ${reset}"
 
-  # -- test ---
-  echo "$S3_BASE_URI"
-  aws s3 ls "$S3_BASE_URI/"
-  # -- test ---
+  # get aws ls output into an array
+  IFS=$'\n' read -r -d '' -a BUCKETLIST < <( aws s3 ls "$S3_BASE_URI/" && printf '\0' )
 
-  aws s3 ls "$S3_BASE_URI/" | while read -r line;  do
+  # remove last line from ls output, a summary line
+  unset 'BUCKETLIST[${#BUCKETLIST[@]}-1]'
 
-    # trim ls output to only contain the folder name formatted as ISO 8601 date
-    # expecting something like "PRE 2022-06-20T12:00:00/"
-    FOLDER_NAME=$(echo $line | cut -c5-23)
+  if [[ ${#BUCKETLIST[@]} -gt 0 ]]
+  then
+    for BUCKET in "${BUCKETLIST[@]}"; do
+      # trim ls output to only contain the folder name formatted as ISO 8601 date
+      # expecting something like "PRE 2022-06-20T12:00:00/"
+      FOLDER_NAME=$(echo $line | cut -c5-23)
 
-    CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
-    BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
+      CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
+      BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
 
-    # -- test ---
-    echo "$FOLDER_NAME"
-    echo "$CREATE_TIMESTAMP | $BEFORE_TIMESTAMP"
-    # -- test ---
+      # -- test ---
+      echo "$FOLDER_NAME"
+      echo "$CREATE_TIMESTAMP | $BEFORE_TIMESTAMP"
+      # -- test ---
 
-    if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
-      then
-        if [[ $FOLDER_NAME != "" ]]
-          then
-            S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
-            echo -e "${blue}deleting $FOLDER_NAME ${reset}"
-            aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
-        fi
-    fi
-  done;
+      if [[ $CREATE_TIMESTAMP -lt $BEFORE_TIMESTAMP ]]
+        then
+          if [[ $FOLDER_NAME != "" ]]
+            then
+              S3_OUTDATED_BACKUP_URI="$S3_BASE_URI/$FOLDER_NAME/"
+              echo -e "${blue}deleting $FOLDER_NAME ${reset}"
+              aws s3 rm "$S3_OUTDATED_BACKUP_URI" --recursive --dryrun --only-show-errors
+          fi
+      fi
+    done
+  else
+    echo -e "${green}Nothing to cleanup...${reset}"
+  fi
 
   echo -e "${green}Finished cleanup...${reset}"
 else
