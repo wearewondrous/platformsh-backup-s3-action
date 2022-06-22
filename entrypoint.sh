@@ -73,7 +73,7 @@ then
     for BUCKET in "${BUCKETLIST[@]}"; do
       # trim ls output to only contain the folder name formatted as ISO 8601 date
       # expecting something like "PRE 2022-06-20T12:00:00/"
-      FOLDER_NAME=$(echo $line | cut -c5-23)
+      FOLDER_NAME=$(echo $BUCKET | cut -c5-23)
 
       CREATE_TIMESTAMP=`date -d"$FOLDER_NAME" +%s`
       BEFORE_TIMESTAMP=`date -d"-$INPUT_DAYS_TO_BACKUP days" +%s`
