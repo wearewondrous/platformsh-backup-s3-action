@@ -23,6 +23,11 @@ FILENAME_PUBLIC="$FILE_PREFIX--public-files"
 FILENAME_PRIVATE="$FILE_PREFIX--private-files"
 FILENAME_SOURCE="$FILE_PREFIX--source-code"
 
+#--- test ---
+echo "GITHUB_REF_NAME is $GITHUB_REF_NAME"
+ls
+git checkout
+
 #--- database backup ---
 echo -e "${yellow}Starting Database Backup...${reset}"
 platform db:dump -v --yes --project "$INPUT_PLATFORMSH_PROJECT" --environment "$GITHUB_REF_NAME" --gzip -f "$FILENAME_DB".sql.gz -q
