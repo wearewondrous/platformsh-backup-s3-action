@@ -8,8 +8,12 @@ inputs:
     description: 'Platform.sh project ID.'
     required: true
   aws_s3_bucket:
-    description: 'AWS S3 bucket name.'
+    description: 'AWS S3 bucket name to store the backup.'
     required: true
+  target_branch:
+    description: 'Production branch to backup database and files from.'
+    required: false
+    default: 'master'
   public_files_path:
     description: 'Public File Path. Defaults to "web/sites/default/files".'
     required: false
